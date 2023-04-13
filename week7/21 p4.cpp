@@ -1,4 +1,4 @@
-// ÀüÀ§¼øÈ¸: ºÎ¸ð³ëµåºÎÅÍ Ãâ·Â
+// ì „ìœ„ìˆœíšŒ: ë¶€ëª¨ë…¸ë“œë¶€í„° ì¶œë ¥
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -29,7 +29,7 @@ public:
 		}
 		return nullptr;
 	}
-	void insert(int x, int y) { // Áßº¹ ¾ø´Ù°í °¡Á¤
+	void insert(int x, int y) { // ì¤‘ë³µ ì—†ë‹¤ê³  ê°€ì •
 		Node* parentNode = findNode(x);
 		Node* newNode = new Node(parentNode, y);
 
@@ -37,8 +37,8 @@ public:
 		nodeList.push_back(newNode);
 	}
 	void preOrder(Node* node) {
-		//if (node == root) { cout << 0 << " "; } // ·çÆ®ÀÇ ºÎ¸ð³ëµå´Â nullptrÀÌ¹Ç·Î ÀÌ °æ¿ì¸¸ µû·Î ¿¹¿ÜÃ³¸®
-		cout << node->data << " "; // ³ëµåÀÇ ºÎ¸ð µ¥ÀÌÅÍ Ãâ·Â(ÀüÀ§¼øÈ¸´Ï±î ¸ÕÀú Ãâ·Â)
+		//if (node == root) { cout << 0 << " "; } // ë£¨íŠ¸ì˜ ë¶€ëª¨ë…¸ë“œëŠ” nullptrì´ë¯€ë¡œ ì´ ê²½ìš°ë§Œ ë”°ë¡œ ì˜ˆì™¸ì²˜ë¦¬
+		cout << node->data << " "; // ë…¸ë“œì˜ ë¶€ëª¨ ë°ì´í„° ì¶œë ¥(ì „ìœ„ìˆœíšŒë‹ˆê¹Œ ë¨¼ì € ì¶œë ¥)
 
 		for (int i = node->childList.size() - 1; i >=0 ; i--) {
 			preOrder(node->childList[i]);
@@ -54,7 +54,7 @@ int main() {
 		int dataList[1000];
 		int depthList[1000];
 
-		// Æ®¸®¸¦ ÀüÀ§¼øÈ¸ÇÑ °ª ÁÖ¾îÁü
+		// íŠ¸ë¦¬ë¥¼ í›„ìœ„ìˆœíšŒí•œ ê°’ ì£¼ì–´ì§
 		cin >> n;
 		for (int i = 0; i < n; i++) {
 			cin >> dataList[i];
@@ -62,27 +62,27 @@ int main() {
 		for (int i = 0; i < n; i++) {
 			cin >> depthList[i];
 		}
-		// ÇöÀç ³ëµåÀÇ depth¿Í ´ÙÀ½ ³ëµåÀÇ depth¸¦ ºñ±³ÇÏ¸é¼­ ¹Ýº¹¹® ÁøÇà
+		// í˜„ìž¬ ë…¸ë“œì˜ depthì™€ ë‹¤ìŒ ë…¸ë“œì˜ depthë¥¼ ë¹„êµí•˜ë©´ì„œ ë°˜ë³µë¬¸ ì§„í–‰
 		/*
 		5 2 8 9 10 6 7 3 4 1
 		2 1 3 3 3 2 2 1 1 0
 		*/
 
-		// 0¹øÂ°´Â ·çÆ®ÀÌ°í, ·çÆ®´Â ÀÌ¹Ì °ªÀÌ ÀúÀåµÅÀÖÀ½ => i=0ºÎÅÍ n-1±îÁö ´ÙÀ½ ³ëµå¿¡ ´ëÇÑ ¿¬»êÀ» ¼öÇàÇÔ
+		// 0ë²ˆì§¸ëŠ” ë£¨íŠ¸ì´ê³ , ë£¨íŠ¸ëŠ” ì´ë¯¸ ê°’ì´ ì €ìž¥ë¼ìžˆìŒ => i=0ë¶€í„° n-1ê¹Œì§€ ë‹¤ìŒ ë…¸ë“œì— ëŒ€í•œ ì—°ì‚°ì„ ìˆ˜í–‰í•¨
 		for (int i = n - 1; i > 0; i--) {
-			if (depthList[i] == depthList[i - 1]) { // ±íÀÌ °°À» ¶§´Â ±×³É °°Àº Ãþ ¿·¿¡´Ù°¡ Ãß°¡(ºÎ¸ð °øÀ¯)
+			if (depthList[i] == depthList[i - 1]) { // ê¹Šì´ ê°™ì„ ë•ŒëŠ” ê·¸ëƒ¥ ê°™ì€ ì¸µ ì˜†ì—ë‹¤ê°€ ì¶”ê°€(ë¶€ëª¨ ê³µìœ )
 				Node* curParent = tree.findNode(dataList[i])->parent;
 				tree.insert(curParent->data, dataList[i - 1]);
 			}
-			else if (depthList[i] < depthList[i - 1]) { // ±×³É ¹Ù·Î ´ÙÀ½³ëµå¸¦ ÇöÀç³ëµåÀÇ ÀÚ½ÄÀ¸·Î »ïÀ½
-				// Node* curNode = tree.findNode(dataList[i]); => ÀÌ°Å insert ÇÔ¼ö¿¡¼­ ÇØÁÖÀÝ¾Æ
+			else if (depthList[i] < depthList[i - 1]) { // ê·¸ëƒ¥ ë°”ë¡œ ë‹¤ìŒë…¸ë“œë¥¼ í˜„ìž¬ë…¸ë“œì˜ ìžì‹ìœ¼ë¡œ ì‚¼ìŒ
+				// Node* curNode = tree.findNode(dataList[i]); => ì´ê±° insert í•¨ìˆ˜ì—ì„œ í•´ì£¼ìž–ì•„
 				tree.insert(dataList[i], dataList[i - 1]);
 			}
-			// 4 2¶ó¸é 2(depth)ÀÇ ºÎ¸ðÀÎ 1À» Ã£¾Æ¼­ insert => ¾Ë¾Æ¼­ ±× µÚ¿¡´Ù°¡ »ðÀÔ
-			// ´ÙÀ½ ³ëµå¿¡ µé¾î°¥ °ª¸¸ ÀÖ°í, ¾êÀÇ ºÎ¸ð°¡ ´©±ºÁö´Â ¾Ë ¼ö ¾øÀ½ => ÇöÀç³ëµå¸¦ ´ÙÀ½³ëµå¿ÍÀÇ ±íÀÌ Â÷ÀÌ¸¸Å­ ->parent ÇØ¼­ ¾Ë¾Æ³»ÀÚ
+			// 4 2ë¼ë©´ 2(depth)ì˜ ë¶€ëª¨ì¸ 1ì„ ì°¾ì•„ì„œ insert => ì•Œì•„ì„œ ê·¸ ë’¤ì—ë‹¤ê°€ ì‚½ìž…
+			// ë‹¤ìŒ ë…¸ë“œì— ë“¤ì–´ê°ˆ ê°’ë§Œ ìžˆê³ , ì–˜ì˜ ë¶€ëª¨ê°€ ëˆ„êµ°ì§€ëŠ” ì•Œ ìˆ˜ ì—†ìŒ => í˜„ìž¬ë…¸ë“œë¥¼ ë‹¤ìŒë…¸ë“œì™€ì˜ ê¹Šì´ ì°¨ì´ë§Œí¼ ->parent í•´ì„œ ì•Œì•„ë‚´ìž
 			else if (depthList[i] > depthList[i - 1]) {
 				Node* curNode = tree.findNode(dataList[i]);
-				int k = depthList[i] - depthList[i - 1]; // ÀÌ°Å ¼ø¼­ Àß ºÁ¶ó
+				int k = depthList[i] - depthList[i - 1]; // ì´ê±° ìˆœì„œ ìž˜ ë´ë¼
 
 				while (k--) {
 					curNode = curNode->parent;
