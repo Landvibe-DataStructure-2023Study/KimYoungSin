@@ -1,4 +1,3 @@
-// 전위순회: 부모노드부터 출력
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -37,10 +36,9 @@ public:
 		nodeList.push_back(newNode);
 	}
 	void preOrder(Node* node) {
-		//if (node == root) { cout << 0 << " "; } // 루트의 부모노드는 nullptr이므로 이 경우만 따로 예외처리
-		cout << node->data << " "; // 노드의 부모 데이터 출력(전위순회니까 먼저 출력)
+		cout << node->data << " ";
 
-		for (int i = node->childList.size() - 1; i >=0 ; i--) {
+		for (int i = node->childList.size() - 1; i >=0 ; i--) { // 거꾸로 삽입하니까, 전위순회도 거꾸로 해야함
 			preOrder(node->childList[i]);
 		}
 	}
@@ -68,18 +66,17 @@ int main() {
 		2 1 3 3 3 2 2 1 1 0
 		*/
 
-		// 0번째는 루트이고, 루트는 이미 값이 저장돼있음 => i=0부터 n-1까지 다음 노드에 대한 연산을 수행함
+		// 배열의 앞에서부터 받으면, 그 위의 부모가 아직 없어서 삽입할 수 없음 => 뒤에서부터 읽자(후위연산 역순)
+		// 배열의 끝 = n - 1, i = 1일때, 배열[0]번째 요소를 처리하는 연산을 마지막으로 함
 		for (int i = n - 1; i > 0; i--) {
-			if (depthList[i] == depthList[i - 1]) { // 깊이 같을 때는 그냥 같은 층 옆에다가 추가(부모 공유)
+			if (depthList[i] == depthList[i - 1]) { // 깊이 같을 때는 그냥 같은 층 옆에다가 추가(부모 공유), 뭐를 부모로하는지 주의해서 삽입
 				Node* curParent = tree.findNode(dataList[i])->parent;
 				tree.insert(curParent->data, dataList[i - 1]);
 			}
-			else if (depthList[i] < depthList[i - 1]) { // 그냥 바로 다음노드를 현재노드의 자식으로 삼음
-				// Node* curNode = tree.findNode(dataList[i]); => 이거 insert 함수에서 해주잖아
+			else if (depthList[i] < depthList[i - 1]) { // i-1이 커지면 바로 다음노드를 현재노드의 자식으로 삼음
 				tree.insert(dataList[i], dataList[i - 1]);
 			}
-			// 4 2라면 2(depth)의 부모인 1을 찾아서 insert => 알아서 그 뒤에다가 삽입
-			// 다음 노드에 들어갈 값만 있고, 얘의 부모가 누군지는 알 수 없음 => 현재노드를 다음노드와의 깊이 차이만큼 ->parent 해서 알아내자
+			// i - 1이 더 작으면 부모 찾아주기
 			else if (depthList[i] > depthList[i - 1]) {
 				Node* curNode = tree.findNode(dataList[i]);
 				int k = depthList[i] - depthList[i - 1]; // 이거 순서 잘 봐라
