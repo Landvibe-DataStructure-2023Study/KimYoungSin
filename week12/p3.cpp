@@ -2,7 +2,6 @@
 using namespace std;
 #define AVAILABLE 2
 
-int cnt = 0;
 struct Entry {
 	int key;
 	string value;
@@ -40,59 +39,52 @@ public:
 		int idx = hashFunc(key);
 		int probing = 1;
 
-		while (1) {
-			if (hash[idx].valid != 1) {
-				hash[idx] = Entry(key, value);
-				cout << probing + idx << "\n";
-				cnt++;
+		while (hash[idx].valid == 1 && probing <= cap) {
+			idx = hashFunc(idx + hashFunc2(key));
+			probing++;
+		}
+		hash[idx] = Entry(key, value);
+		cout << probing + idx << "\n";
+	}
+	void erase(int key) {
+		int idx = hashFunc(key);
+		int probing = 1;
+
+		while (hash[idx].valid != 0 && probing <= cap) {
+			if (hash[idx].valid == 1 && hash[idx].key == key) {
+				hash[idx].valid = AVAILABLE;
+				cout << hash[idx].value << "\n";
 				return;
 			}
 			idx = hashFunc(idx + hashFunc2(key));
 			probing++;
-			if (probing > cap) return;
 		}
-	}
-	void erase(int key) {
-		int idx = hashFunc(key);
-		while (1) {
-			if (hash[idx].valid == 0) {
-				cout << "None\n";
-				return;
-			}
-			if (hash[idx].key == key) {
-				hash[idx].valid = AVAILABLE;
-				//hash[idx].value = ""; hash[idx].key = 0;
-				cout << hash[idx].value << "\n";
-				cnt--;
-				return;
-			}
-			idx = hashFunc(idx + hashFunc2(key));
-		}
+		cout << "None\n";
 	}
 	
-	void find(int key) {
+	void find(int key) { 
 		int idx = hashFunc(key);
-		while (1) {
-			if (hash[idx].valid == 0) {
-				cout << "None\n";
-				return;
-			}
-			if (hash[idx].key == key) {
+		int probing = 1;
+
+		while (hash[idx].valid != 0 && probing <= cap) { // 1 or available
+			if (hash[idx].valid == 1 && hash[idx].key == key) {
 				cout << hash[idx].value << "\n";
 				return;
 			}
 			idx = hashFunc(idx + hashFunc2(key));
+			probing++; 
 		}
+		cout << "None\n";
 	}
-	/*void vacant() {
+	void vacant() {
 		int idx = 0;
 		int cnt = 0;
 		while (idx < cap) {
-			if (hash[idx].valid != 1)cnt++;
+			if (hash[idx].valid != 1) cnt++;
 			idx++;
 		}
 		cout << cnt << "\n";
-	}*/
+	}
 };
 int main() {
 	int t, n, m;
@@ -120,7 +112,7 @@ int main() {
 			h.find(key);
 		}
 		else if (s == "vacant") {
-			cout << n - cnt << "\n";
+			h.vacant();
 		}
 	}
 }
