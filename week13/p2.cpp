@@ -4,9 +4,9 @@ using namespace std;
 
 bool graph[501][501];
 bool check[501];
-bool connect[501][501]; // ¿¬µ¿
+bool connect[501][501]; // ì—°ë™
 int main() {
-	int n, m, d; // n: °¡ÀÔÀÚ ¼ö, m: ÁúÀÇ °³¼ö, d: °èÁ¤ ¿¬µ¿ ¿É¼Ç ¾²´Â »ç¿ëÀÚ ¼ö
+	int n, m, d; // n: ê°€ì…ì ìˆ˜, m: ì§ˆì˜ ê°œìˆ˜, d: ê³„ì • ì—°ë™ ì˜µì…˜ ì“°ëŠ” ì‚¬ìš©ì ìˆ˜
 	cin >> n >> m >> d;
 
 	while (d--) {
@@ -18,17 +18,17 @@ int main() {
 		for (int j = 1; j <= n; j++) {
 			int k;
 			cin >> k;
-			if (graph[i][j] != 2) graph[i][j] = k;
+			graph[i][j] = k;
 		}
 	}
 	while (m--) {
 		vector<int> Friend;
-		int k; // »ç¿ëÀÚ ¹øÈ£
-		int s; // ÃßÃµ¹üÀ§
+		int k; // ì‚¬ìš©ì ë²ˆí˜¸
+		int s; // ì¶”ì²œë²”ìœ„
 		cin >> k >> s;
 
-		int a[501] = { 0 }; // Áßº¹ Á¦°Å¿ë ¹è¿­ => ¹è¿­ ÃÊ±âÈ­ÇÒ ¶§ {0} ÇØ¾ßµÊ
-		a[k] = 1; // º»ÀÎ Á¦¿Ü
+		int a[501] = { 0 }; // ì¤‘ë³µ ì œê±°ìš© ë°°ì—´ => ë°°ì—´ ì´ˆê¸°í™”í•  ë•Œ {0} í•´ì•¼ë¨
+		a[k] = 1; // ë³¸ì¸ ì œì™¸
 		if (s == 1) {
 			for (int i = 1; i <= n; i++) {
 				if (graph[k][i] == 1 && a[i] != 1 && !connect[k][i]) {
@@ -46,11 +46,11 @@ int main() {
 		else if (s == 2) {
 			for (int i = 1; i <= n; i++) {
 				if (graph[k][i] == 1) {
-					if (a[i] != 1 && !connect[k][i]) { // Ã¹¹øÂ° Ä£±¸	
+					if (a[i] != 1 && !connect[k][i]) { // ì²«ë²ˆì§¸ ì¹œêµ¬	
 						Friend.push_back(i);
 						a[i] = 1;
 					}
-					for (int j = 1; j <= n; j++) { // Ã¹¹øÂ° Ä£±¸ÀÇ ¿¬µ¿
+					for (int j = 1; j <= n; j++) { // ì²«ë²ˆì§¸ ì¹œêµ¬ì˜ ì—°ë™
 						if (connect[i][j]) {
 							if (k != j && a[j] != 1) {
 								Friend.push_back(j);
@@ -75,7 +75,7 @@ int main() {
 			}
 		}
 
-		// Á¤·Ä
+		// ì •ë ¬
 		for (int i = 0; i < Friend.size(); i++) {
 			for (int j = 0; j < Friend.size(); j++) {
 				if (Friend[i] < Friend[j]) swap(Friend[i], Friend[j]);
